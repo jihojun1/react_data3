@@ -1,8 +1,9 @@
 import "./Editor.css";
-import { useState } from "react";
-import { getFormattedDate } from "../util";
+import { useState, useEffect } from "react";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
+import { emotionList, getFormattedDate } from "../util";
+import EmotionItem from "./EmotionItem";
 
 const Editor = ({ initData, onSubmit }) => {
   const navigate = useNavigate();
@@ -29,6 +30,20 @@ const Editor = ({ initData, onSubmit }) => {
   const handleOnGoBack = () => {
     navigate(-1);
   };
+  const handleChangeEmotion = (emotionId) => {
+    setState({
+      ...state,
+      emotionId,
+    });
+  };
+  useEffect(() => {
+    if (initData) {
+      setState({
+        ...initData,
+        date: getFormattedDate(new Date(parseInt(initData.date))),
+      });
+    }
+  }, [initData]);
 
   return (
     <div className="Editor">
@@ -39,8 +54,18 @@ const Editor = ({ initData, onSubmit }) => {
         </div>
       </div>
       <div className="editor_section">
-        {/* 감정 */}
         <h4>오늘의 감정</h4>
+        <div className="input_wrapper emotion_list_wrapper">
+          {emotionList.map((it) => (
+            <EmotionItem
+              key={it.id}
+              {...it}
+              onClick={handleChangeEmotion}
+              isSelected={state.emotionId === it.id}
+              // <img key={it.id} alt={`emotion${it.id}`} src={it.img} />
+            />
+          ))}
+        </div>
       </div>
       <div className="editor_section">
         {/* 일기 */}
