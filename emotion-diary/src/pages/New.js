@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../component/Button";
 import Header from "../component/Header";
 import Editor from "../component/Editor";
 import { DiaryDispatchContext } from "../App";
+import { setPageTitle } from "../util";
 
 const New = () => {
+  useEffect(() => {
+    setPageTitle("새 일기 쓰기");
+  }, []);
+
   const { onCreate } = useContext(DiaryDispatchContext);
   const navigate = useNavigate();
   const goBack = () => {
